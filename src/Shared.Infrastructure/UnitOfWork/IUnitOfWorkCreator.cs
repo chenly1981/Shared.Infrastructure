@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shared.Infrastructure.UnitOfWork
 {
-    internal interface IUnitOfWorkCreator
+    public interface IUnitOfWorkCreator
     {
         IUnitOfWork CreateUnitOfWork();
     }

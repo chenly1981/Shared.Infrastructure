@@ -12,9 +12,9 @@ namespace Shared.Infrastructure.UnitOfWork
             ComponentContext = componentContext;
         }
 
-        public IUnitOfWork CreateUnitOfWork(string name)
+        public IUnitOfWork CreateUnitOfWork(string alias)
         {
-            string creatorName = Consts.UNIT_OF_WORK_CREATOR_PREFIX + name;
+            string creatorName = UnitOfWorkHelper.GetUnitOfWorkName(alias);
             if (ComponentContext.IsRegisteredWithName<IUnitOfWorkCreator>(creatorName))
             {
                 return ComponentContext.ResolveNamed<IUnitOfWorkCreator>(creatorName).CreateUnitOfWork();
