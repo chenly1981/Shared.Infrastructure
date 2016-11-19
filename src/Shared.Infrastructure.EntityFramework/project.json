@@ -1,17 +1,13 @@
-﻿{
+{
   "version": "0.1.0",
-
   "dependencies": {
     "NETStandard.Library": "1.6.1",
     "Microsoft.EntityFrameworkCore": "1.1.0",
-
     "Shared.Infrastructure": "0.1.0"
   },
-
   "frameworks": {
     "netstandard1.6": {}
   },
-
   "packOptions": {
     "repository": {
       "type": "git",
@@ -22,5 +18,8 @@
       "Shared.Infrastructure",
       "Shared.Infrastructure.EntityFramework"
     ]
+  },
+  "buildOptions": {
+    "xmlDoc": true
   }
 }
