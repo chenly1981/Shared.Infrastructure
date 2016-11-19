@@ -17,6 +17,7 @@
       "type": "git",
       "url": "https://github.com/scheshan/Shared.Infrastructure"
     },
+    "owners": [ "scheshan" ],
     "tags": [
       "Shared.Infrastructure",
       "Shared.Infrastructure.EntityFramework"
