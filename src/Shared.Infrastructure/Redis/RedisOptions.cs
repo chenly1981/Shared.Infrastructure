@@ -5,16 +5,16 @@
         /// <summary>
         /// Redis end points, such as "{host or ip}:{port}"
         /// </summary>
-        public string[] EndPoints { get; }
+        public string[] EndPoints { get; set; }
 
         /// <summary>
         /// Redis password
         /// </summary>
-        public string Password { get; }
+        public string Password { get; set; }
 
         /// <summary>
         /// Default redis database
         /// </summary>
-        public int Db { get; }
+        public int Db { get; set; }
     }
 }

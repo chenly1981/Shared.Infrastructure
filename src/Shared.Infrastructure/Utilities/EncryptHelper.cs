@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Shared.Infrastructure.Utilities
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class EncryptHelper
     {
         private static MD5 _md5 = MD5.Create();
@@ -24,9 +27,26 @@ namespace Shared.Infrastructure.Utilities
             }
 
             byte[] inputData = Encoding.UTF8.GetBytes(input);
-            byte[] computeData = _md5.ComputeHash(inputData);
 
-            return BitConverter.ToString(computeData).Replace("-", "").ToUpper();
+            return EncryptMD5(inputData);
+        }
+
+        /// <summary>
+        /// Encrypt the byte data by MD5
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string EncryptMD5(byte[] input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            byte[] hashData = _md5.ComputeHash(input);
+
+            string result = BitConverter.ToString(hashData).Replace("-", "");
+            return result;
         }
     }
 }
