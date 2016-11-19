@@ -9,11 +9,17 @@
   },
 
   "frameworks": {
-    "netstandard1.6": {
-      "imports": "dnxcore50"
-    },
-    "netframework461": {
+    "netstandard1.6": {}
+  },
 
-    }
+  "packOptions": {
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/scheshan/Shared.Infrastructure"
+    },
+    "tags": [
+      "Shared.Infrastructure",
+      "Shared.Infrastructure.EntityFramework"
+    ]
   }
 }
