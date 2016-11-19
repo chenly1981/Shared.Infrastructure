@@ -9,8 +9,18 @@ using System.Threading.Tasks;
 
 namespace Shared.Infrastructure
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ContainerBuilderExtensions
     {
+        /// <summary>
+        /// Add EntityFramework support for UnitOfWork
+        /// </summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <param name="builder"></param>
+        /// <param name="alias"></param>
+        /// <returns></returns>
         public static ContainerBuilder AddEntityFramework<TContext>(this ContainerBuilder builder, string alias)
             where TContext : DbContext
         {

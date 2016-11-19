@@ -13,7 +13,7 @@ namespace Shared.Infrastructure.Test
     [TestClass]
     public abstract class UnitTestBase : IDisposable
     {
-        public void Dispose()
+        public virtual void Dispose()
         {
             
         }
