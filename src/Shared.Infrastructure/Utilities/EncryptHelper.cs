@@ -11,6 +11,11 @@ namespace Shared.Infrastructure.Utilities
     {
         private static MD5 _md5 = MD5.Create();
 
+        /// <summary>
+        /// Encrypt string by MD5
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string EncryptMD5(string input)
         {
             if (string.IsNullOrWhiteSpace(input))

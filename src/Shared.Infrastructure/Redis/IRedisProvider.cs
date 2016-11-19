@@ -1,11 +1,22 @@
 ﻿using StackExchange.Redis;
+using System.Net;
 
 namespace Shared.Infrastructure.Redis
 {
     public interface IRedisProvider
     {
+        /// <summary>
+        /// Get the redis database instance
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         IDatabase GetDatabase(int? db = -1);
 
-        IServer GetServer();
+        /// <summary>
+        /// Get the redis server
+        /// </summary>
+        /// <param name="endPoint">The specical end point. Return the first server while passing null</param>
+        /// <returns></returns>
+        IServer GetServer(EndPoint endPoint = null);
     }
 }

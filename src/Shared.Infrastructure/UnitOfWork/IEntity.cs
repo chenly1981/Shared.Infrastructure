@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Shared.Infrastructure.UnitOfWork
 {
+    /// <summary>
+    /// Base entity interface while using UnitOfWork
+    /// </summary>
     public interface IEntity
     {
 

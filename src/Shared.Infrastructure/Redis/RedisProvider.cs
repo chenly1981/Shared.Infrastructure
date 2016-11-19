@@ -2,6 +2,7 @@
 using StackExchange.Redis;
 using System;
 using System.Linq;
+using System.Net;
 
 namespace Shared.Infrastructure.Redis
 {
@@ -50,9 +51,14 @@ namespace Shared.Infrastructure.Redis
             return Pool.GetDatabase(db ?? -1);
         }
 
-        public IServer GetServer()
+        public IServer GetServer(EndPoint endPoint = null)
         {
-            return Pool.GetServer(this.Pool.GetEndPoints().First());
+            if (endPoint == null)
+            {
+                endPoint = Pool.GetEndPoints().First();
+            }
+
+            return Pool.GetServer(endPoint);
         }
 
         private void Connect()

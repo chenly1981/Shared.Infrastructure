@@ -11,7 +11,7 @@ namespace Shared.Infrastructure
 {
     public static class ContainerBuilderExtensions
     {
-        public static ContainerBuilder AddEntityFramework<TContext>(this ContainerBuilder builder, string alias, Action<DbContextOptionsBuilder> optionsAction = null)
+        public static ContainerBuilder AddEntityFramework<TContext>(this ContainerBuilder builder, string alias)
             where TContext : DbContext
         {
             string creatorName = UnitOfWorkHelper.GetUnitOfWorkName(alias);
