@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Shared.Infrastructure.UnitOfWork;
 
-namespace Shared.Infrastructure.EntityFramework.UnitOfWork
+namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 {
     public class EntityFrameworkUnitOfWork<TContext> : UnitOfWorkBase
         where TContext : DbContext

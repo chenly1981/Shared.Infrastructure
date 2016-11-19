@@ -2,7 +2,7 @@
 using Shared.Infrastructure.UnitOfWork;
 using System;
 
-namespace Shared.Infrastructure.EntityFramework.UnitOfWork
+namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 {
     internal class EntityFrameworkTransaction : ITransaction
     {

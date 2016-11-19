@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Shared.Infrastructure.EntityFramework.UnitOfWork
+namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 {
     /// <summary>
     /// 用于EntityFramework的仓储基类

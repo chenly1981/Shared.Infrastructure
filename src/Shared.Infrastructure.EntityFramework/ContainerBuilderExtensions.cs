@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Microsoft.EntityFrameworkCore;
-using Shared.Infrastructure.EntityFramework.UnitOfWork;
+using Shared.Infrastructure.UnitOfWork.EntityFramework;
 using Shared.Infrastructure.UnitOfWork;
 using System;
 using System.Collections.Generic;
