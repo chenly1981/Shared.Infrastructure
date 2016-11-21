@@ -18,6 +18,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Shared.Infrastructure.Entit
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Shared.Infrastructure.Test", "test\Shared.Infrastructure.Test\Shared.Infrastructure.Test.xproj", "{CD5EA791-F02D-4807-80E8-693E82380927}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Shared.Infrastructure.Cassandra", "src\Shared.Infrastructure.Cassandra\Shared.Infrastructure.Cassandra.xproj", "{270463EF-663C-40CC-A023-D2F11A745787}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{CD5EA791-F02D-4807-80E8-693E82380927}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD5EA791-F02D-4807-80E8-693E82380927}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD5EA791-F02D-4807-80E8-693E82380927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{270463EF-663C-40CC-A023-D2F11A745787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{270463EF-663C-40CC-A023-D2F11A745787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{270463EF-663C-40CC-A023-D2F11A745787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{270463EF-663C-40CC-A023-D2F11A745787}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,5 +50,6 @@ Global
 		{1B0C3AE6-00AD-4E73-BDBD-EF681781F4AF} = {B21E926F-EDEC-44F4-A1EF-858367B11688}
 		{A7547D48-2881-4BFD-A603-4B7B5405B2D3} = {B21E926F-EDEC-44F4-A1EF-858367B11688}
 		{CD5EA791-F02D-4807-80E8-693E82380927} = {18A507B3-A1B1-49DC-A0CD-632A5D2FDA01}
+		{270463EF-663C-40CC-A023-D2F11A745787} = {B21E926F-EDEC-44F4-A1EF-858367B11688}
 	EndGlobalSection
 EndGlobal

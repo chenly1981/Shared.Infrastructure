@@ -37,16 +37,18 @@ namespace Shared.Infrastructure.Configuration.Database
 
             using (var conn = Options.ConnectionResolver.Invoke())
             {
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = $"select {Options.NameColumn}, {Options.ValueColumn} from {Options.Table}";
-                using (var reader = cmd.ExecuteReader())
+                using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    while (reader.Read())
+                    cmd.CommandText = $"select {Options.KeyColumn}, {Options.ValueColumn} from {Options.Table}";
+                    using (IDataReader reader = cmd.ExecuteReader())
                     {
-                        string name = reader.GetString(0);
-                        string value = reader.GetString(1);
+                        while (reader.Read())
+                        {
+                            string name = reader.GetString(0);
+                            string value = reader.GetString(1);
 
-                        data[name] = value;
+                            data[name] = value;
+                        }
                     }
                 }
             }

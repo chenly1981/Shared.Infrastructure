@@ -24,7 +24,7 @@ namespace Shared.Infrastructure.Configuration.Database
         /// <summary>
         /// 
         /// </summary>
-        public string NameColumn { get; set; }
+        public string KeyColumn { get; set; }
 
         /// <summary>
         /// 
