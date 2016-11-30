@@ -40,7 +40,7 @@ namespace Shared.Infrastructure.Utilities
         {
             if (input == null)
             {
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
             }
 
             byte[] hashData = _md5.ComputeHash(input);
