@@ -56,8 +56,38 @@ namespace Shared.Infrastructure.Test
                 entity = uw.Get<Context.TestContext.TestEntity>(t => t.ID == 1);
 
                 Assert.IsNotNull(entity);
-                Assert.AreEqual(entity.Name, "name");                
+                Assert.AreEqual(entity.Name, "name");
+            }
+        }
+
+        [TestMethod]
+        public void AddCassandra()
+        {
+            IServiceProvider serviceProvider = InitDependencyInjection(services =>
+            {
+
+            }, containerBuilder =>
+            {
+                containerBuilder.AddUnitOfWork()
+                    .AddCassandra("cassandra", new UnitOfWork.Cassandra.CassandraOptions
+                    {
+                        Nodes = new string[] { "192.168.40.229" },
+                        User = "cassandra",
+                        Password = "cassandra",
+                        KeySpace = "ias_dev"
+                    });
+            });
+
+            IUnitOfWorkProvider unitOfWirkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
+            using (IUnitOfWork uw = unitOfWirkProvider.CreateUnitOfWork("cassandra"))
+            {
+                Assert.IsNotNull(uw);
+
+                var entityList = uw.Query<Entity.RTLSAreaDataDay>(t => t.Day == 20161129);
+
+                Assert.IsTrue(entityList.Count > 0);
             }
         }
     }
 }
+

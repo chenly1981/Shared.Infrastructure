@@ -25,6 +25,9 @@
     },
     "Shared.Infrastructure.EntityFramework": {
       "target": "project"
+    },
+    "Shared.Infrastructure.Cassandra": {
+      "target": "project"
     }
   },
 
