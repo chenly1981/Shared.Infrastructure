@@ -242,23 +242,21 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
 
         #endregion
 
-        #region private methods
+        #region protected methods
 
         protected Table<T> GetTable()
         {
             return new Table<T>(this.Connection);
         }
 
-        #endregion
-
         protected List<T> QueryPaged(System.Linq.Expressions.Expression<Func<T, bool>> predicate, int pageIndex, int pageSize)
         {
-            int currentPageIndex = 1;
+            int currentPageIndex = 0;
 
             byte[] pagingState = null;
             IPage<T> pagedResult = null;
 
-            do
+            while (currentPageIndex < pageIndex)
             {
                 var query = this.GetTable()
                     .SetPageSize(pageSize);
@@ -275,10 +273,13 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
 
                 pagedResult = query.ExecutePaged();
                 pagingState = pagedResult.PagingState;
+
+                currentPageIndex++;
             }
-            while (currentPageIndex < pageIndex);
 
             return pagedResult.ToList();
         }
+
+        #endregion
     }
 }
