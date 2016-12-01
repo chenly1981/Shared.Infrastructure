@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.Infrastructure.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +37,7 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
         #region sync methods
 
         public virtual void Insert(T entity)
-        {
+        {            
             this.Set.Add(entity);
             this.Context.SaveChanges();
         }
@@ -111,6 +110,11 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
         public virtual long Count(Expression<Func<T, bool>> predicate)
         {
             return this.Set.LongCount(predicate);
+        }
+
+        public void BatchInsert(IEnumerable<T> entityList)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -194,6 +198,11 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
         public virtual async Task<long> CountAsync(Expression<Func<T, bool>> predicate)
         {
             return await this.Set.LongCountAsync(predicate);
+        }
+
+        public Task BatchInsertAsync(IEnumerable<T> entityList)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

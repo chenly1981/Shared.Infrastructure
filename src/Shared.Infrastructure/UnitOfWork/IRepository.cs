@@ -7,11 +7,18 @@ using System.Threading.Tasks;
 
 namespace Shared.Infrastructure.UnitOfWork
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IRepository
     {
 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IRepository<T> : IRepository
         where T : class, IEntity
     {
@@ -45,6 +52,8 @@ namespace Shared.Infrastructure.UnitOfWork
 
         long Count(Expression<Func<T, bool>> predicate);
 
+        void BatchInsert(IEnumerable<T> entityList);
+
         #endregion
 
         #region async methods
@@ -76,6 +85,8 @@ namespace Shared.Infrastructure.UnitOfWork
         Task<long> CountAsync();
 
         Task<long> CountAsync(Expression<Func<T, bool>> predicate);
+
+        Task BatchInsertAsync(IEnumerable<T> entityList);
 
         #endregion
     }

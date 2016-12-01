@@ -117,6 +117,21 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
             throw new NotImplementedException();
         }
 
+        public void BatchInsert(IEnumerable<T> entityList)
+        {
+            var table = this.GetTable();
+
+            entityList.BatchOperate(items =>
+            {
+                var batch = new BatchStatement();
+                foreach (var item in items)
+                {
+                    batch.Add(table.Insert(item));
+                }
+                this.Connection.Execute(batch);
+            }, 1000);
+        }
+
         #endregion
 
         #region async methods
@@ -207,34 +222,7 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region private methods
-
-        protected Table<T> GetTable()
-        {
-            return new Table<T>(this.Connection);
-        }
-
-        #endregion
-
-        public void BatchInsert(IEnumerable<T> entityList, int batchSize)
-        {
-            var table = this.GetTable();
-
-            entityList.BatchOperate(items =>
-            {
-                var batch = new BatchStatement();
-                foreach (var item in items)
-                {
-                    batch.Add(table.Insert(item));
-                }
-                this.Connection.Execute(batch);
-            }, batchSize);
-        }
-
-
-        public async Task BatchInsertAsync(IEnumerable<T> entityList, int batchSize)
+        public async Task BatchInsertAsync(IEnumerable<T> entityList)
         {
             var table = this.GetTable();
 
@@ -247,10 +235,21 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
                     batch.Add(table.Insert(item));
                 }
                 tasks.Add(this.Connection.ExecuteAsync(batch));
-            });
+            }, 1000);
 
             await Task.WhenAll(tasks);
         }
+
+        #endregion
+
+        #region private methods
+
+        protected Table<T> GetTable()
+        {
+            return new Table<T>(this.Connection);
+        }
+
+        #endregion
 
         protected List<T> QueryPaged(System.Linq.Expressions.Expression<Func<T, bool>> predicate, int pageIndex, int pageSize)
         {
