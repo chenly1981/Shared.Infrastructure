@@ -52,8 +52,8 @@ namespace Shared.Infrastructure.Extensions
             foreach (var entity in list)
             {
                 temp.Add(entity);
-                index++;
                 isLast = index == total - 1;
+                index++;
 
                 if (index % batchSize == 0 || isLast)
                 {
