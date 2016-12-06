@@ -30,6 +30,10 @@ namespace Shared.Infrastructure
 
         public IServiceProvider CreateServiceProvider(ContainerBuilder containerBuilder)
         {
+            containerBuilder.RegisterType<Background.BackgroundService>()
+                .As<Background.IBackgroundService>()
+                .SingleInstance();
+
             return new AutofacServiceProvider(containerBuilder.Build());
         }
     }

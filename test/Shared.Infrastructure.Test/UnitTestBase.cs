@@ -20,14 +20,15 @@ namespace Shared.Infrastructure.Test
 
         protected IServiceProvider InitDependencyInjection(Action<IServiceCollection> servicesAction = null, Action<ContainerBuilder> containerBuilderAction = null)
         {
+            IServiceProviderFactory<ContainerBuilder> factory = new InfrastructureFactory();            
+
             var services = new ServiceCollection();
             servicesAction?.Invoke(services);
 
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.Populate(services);
+            ContainerBuilder containerBuilder = factory.CreateBuilder(services);            
             containerBuilderAction?.Invoke(containerBuilder);
 
-            return new AutofacServiceProvider(containerBuilder.Build());
+            return factory.CreateServiceProvider(containerBuilder);
         }
     }
 }
