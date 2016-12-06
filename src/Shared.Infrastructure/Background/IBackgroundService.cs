@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Shared.Infrastructure.Background
 {
     /// <summary>
-    /// 
+    /// A service to support background job.
     /// </summary>
     public interface IBackgroundService
     {
