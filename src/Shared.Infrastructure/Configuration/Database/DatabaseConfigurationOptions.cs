@@ -30,5 +30,10 @@ namespace Shared.Infrastructure.Configuration.Database
         /// 
         /// </summary>
         public string ValueColumn { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Prefix { get; set; }
     }
 }

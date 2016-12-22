@@ -44,10 +44,15 @@ namespace Shared.Infrastructure.Configuration.Database
                     {
                         while (reader.Read())
                         {
-                            string name = reader.GetString(0);
+                            string key = reader.GetString(0);                            
+                            if (!string.IsNullOrWhiteSpace(Options.Prefix))
+                            {
+                                key = $"{Options.Prefix}:{key}";
+                            }
+
                             string value = reader.GetString(1);
 
-                            data[name] = value;
+                            data[key] = value;
                         }
                     }
                 }
