@@ -36,6 +36,8 @@ namespace Shared.Infrastructure.Background
         /// </summary>
         private async Task Dispatch()
         {
+            await Task.Delay(100);
+
             while (true)
             {
                 Action action;
