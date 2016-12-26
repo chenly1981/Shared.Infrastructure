@@ -11,7 +11,7 @@ namespace Shared.Infrastructure.Background
     public interface IBackgroundService
     {
         /// <summary>
-        /// 
+        /// Add a action to background service. The action will invoke asynchronously.
         /// </summary>
         /// <param name="action"></param>
         void Invoke(Action action);

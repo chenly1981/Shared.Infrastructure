@@ -17,22 +17,22 @@ namespace Shared.Infrastructure.Configuration.Database
         public Func<IDbConnection> ConnectionResolver { get; set; }
 
         /// <summary>
-        /// 
+        /// The table name to store the configuration
         /// </summary>
         public string Table { get; set; }
 
         /// <summary>
-        /// 
+        /// The column name to store the key
         /// </summary>
         public string KeyColumn { get; set; }
 
         /// <summary>
-        /// 
+        /// The column name to store the value
         /// </summary>
         public string ValueColumn { get; set; }
 
         /// <summary>
-        /// 
+        /// The prefix append in front of the key
         /// </summary>
         public string Prefix { get; set; }
     }
