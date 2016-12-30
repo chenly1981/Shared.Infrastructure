@@ -1,10 +1,10 @@
 ﻿{
-  "version": "0.1.5",
+  "version": "0.1.5-*",
 
   "dependencies": {
-    "NETStandard.Library": "1.6.1",
-    "Shared.Infrastructure": "0.1.5",
-    "CassandraCSharpDriver": "3.1.0"
+    "NETStandard.Library": "1.6.1-*",
+    "Shared.Infrastructure": "0.1.5-*",
+    "CassandraCSharpDriver": "3.1.0-*"
   },
 
   "frameworks": {
