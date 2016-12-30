@@ -66,6 +66,36 @@ namespace Shared.Infrastructure.Test
             Assert.AreEqual(configurationValue, value);
         }
 
+        [TestMethod]
+        public void PrefixShoulWork()
+        {
+            string prefix = DateTime.Now.ToString();
+
+            var options = new DatabaseConfigurationOptions
+            {
+                ConnectionResolver = GetOpenedConnection,
+                KeyColumn = "key",
+                ValueColumn = "value",
+                Table = $"config_{DateTime.Now.ToString("yyyyMMddHHmmss")}",
+                Prefix = prefix
+            };
+
+            string key = Guid.NewGuid().ToString();
+            string value = Guid.NewGuid().ToString();
+
+            InitConfigurationTable(options, key, value);
+
+            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddJsonFile("notExist.json", true)
+                .AddDatabase(options);
+
+            IConfigurationRoot configuration = configurationBuilder.Build();
+
+            string configurationValue = configuration[$"{prefix}:{key}"];
+            Assert.AreEqual(configurationValue, value);
+        }
+
         private SqliteConnection GetOpenedConnection()
         {
             string connectionString = "Data Source=test.db;";
