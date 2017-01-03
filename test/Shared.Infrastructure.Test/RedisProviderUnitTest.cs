@@ -67,5 +67,31 @@ namespace Shared.Infrastructure.Test
             IServer server = redisProvider.GetServer();
             Assert.IsNotNull(server);
         }
+
+        [TestMethod]
+        public void GetOptionsShouldWork()
+        {
+            IServiceProvider serviceProvider = InitDependencyInjection(services =>
+            {
+                services.AddOptions();
+
+                services.Configure<RedisOptions>(opt =>
+                {
+                    opt.EndPoints = new string[] { "localhost:6379" };
+                    opt.Db = 1;
+                });
+            }, containerBulder =>
+            {
+                containerBulder.AddRedis();
+            });
+
+            IRedisProvider redisProvider = serviceProvider.GetService<IRedisProvider>();
+            RedisOptions redisOptions = redisProvider.GetOptions();
+
+            Assert.IsNotNull(redisOptions);
+            Assert.AreEqual(redisOptions.EndPoints.Length, 1);
+            Assert.AreEqual(redisOptions.EndPoints[0], "localhost:6379");
+            Assert.AreEqual(redisOptions.Db, 1);
+        }
     }
 }

@@ -3,6 +3,9 @@ using System.Net;
 
 namespace Shared.Infrastructure.Redis
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IRedisProvider
     {
         /// <summary>
@@ -18,5 +21,11 @@ namespace Shared.Infrastructure.Redis
         /// <param name="endPoint">The specical end point. Return the first server while passing null</param>
         /// <returns></returns>
         IServer GetServer(EndPoint endPoint = null);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        RedisOptions GetOptions();
     }
 }

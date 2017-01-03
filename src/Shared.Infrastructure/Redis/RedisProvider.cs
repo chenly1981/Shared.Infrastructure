@@ -6,6 +6,9 @@ using System.Net;
 
 namespace Shared.Infrastructure.Redis
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class RedisProvider : IRedisProvider, IDisposable
     {
         private static readonly object _sync = new object();
@@ -33,11 +36,18 @@ namespace Shared.Infrastructure.Redis
 
         private IOptions<RedisOptions> OptionsAccessor { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="optionsAccessor"></param>
         public RedisProvider(IOptions<RedisOptions> optionsAccessor)
         {
             OptionsAccessor = optionsAccessor;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
             if (Pool != null)
@@ -46,11 +56,21 @@ namespace Shared.Infrastructure.Redis
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public IDatabase GetDatabase(int? db = -1)
         {
             return Pool.GetDatabase(db ?? -1);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="endPoint"></param>
+        /// <returns></returns>
         public IServer GetServer(EndPoint endPoint = null)
         {
             if (endPoint == null)
@@ -74,6 +94,15 @@ namespace Shared.Infrastructure.Redis
             }
 
             _pool = ConnectionMultiplexer.Connect(configuration);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public RedisOptions GetOptions()
+        {
+            return OptionsAccessor.Value;
         }
     }
 }
