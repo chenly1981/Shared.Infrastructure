@@ -121,7 +121,7 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
         {
             var table = this.GetTable();
 
-            entityList.BatchOperate(items =>
+            entityList.BatchInvoke(items =>
             {
                 var batch = new BatchStatement();
                 foreach (var item in items)
@@ -227,7 +227,7 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
             var table = this.GetTable();
 
             List<Task> tasks = new List<Task>();
-            entityList.BatchOperate(items =>
+            entityList.BatchInvoke(items =>
             {
                 var batch = new BatchStatement();
                 foreach (var item in items)

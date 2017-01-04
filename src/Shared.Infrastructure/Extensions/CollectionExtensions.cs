@@ -31,7 +31,7 @@ namespace Shared.Infrastructure.Extensions
         /// <param name="list"></param>
         /// <param name="action"></param>
         /// <param name="batchSize"></param>
-        public static void BatchOperate<T>(this IEnumerable<T> list, Action<IEnumerable<T>> action, int batchSize = 1000)
+        public static void BatchInvoke<T>(this IEnumerable<T> list, Action<IEnumerable<T>> action, int batchSize = 1000)
         {
             if (list == null || list.Count() == 0)
             {
