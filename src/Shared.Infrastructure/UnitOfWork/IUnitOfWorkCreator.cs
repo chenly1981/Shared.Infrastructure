@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace Shared.Infrastructure.UnitOfWork
 {
-    public interface IUnitOfWorkCreator
+    /// <summary>
+    /// The creator to create UnitOfWork instance
+    /// </summary>
+    public interface IUnitOfWorkCreator : IDisposable
     {
+        /// <summary>
+        /// Create a UnitOfWork instance
+        /// </summary>
+        /// <returns></returns>
         IUnitOfWork CreateUnitOfWork();
     }
 }

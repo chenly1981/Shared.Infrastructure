@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.Extensions.Options;
 using Shared.Infrastructure.UnitOfWork;
 using Shared.Infrastructure.UnitOfWork.Cassandra;
 using System;

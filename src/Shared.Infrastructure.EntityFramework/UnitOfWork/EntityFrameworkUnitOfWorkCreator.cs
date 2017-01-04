@@ -26,5 +26,10 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
             var uw = this.ComponentContext.Resolve<EntityFrameworkUnitOfWork<TContext>>();
             return uw;
         }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

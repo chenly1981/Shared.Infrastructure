@@ -40,5 +40,13 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
 
             return this.ComponentContext.Resolve<CassandraUnitOfWork>(parameter);
         }
+
+        public void Dispose()
+        {
+            if (this.CassandraCluster != null)
+            {
+                this.CassandraCluster.Dispose();
+            }
+        }
     }
 }
