@@ -12,9 +12,9 @@ namespace Shared.Infrastructure
     {
         /// <summary>
         /// Register redis provider
-        /// You should configure RedisOptions before you do this by calling services.Configure<RedisOptions>()
         /// </summary>
         /// <param name="builder"></param>
+        /// <param name="redisOptions"></param>
         /// <returns></returns>
         public static ContainerBuilder AddRedis(this ContainerBuilder builder, RedisOptions redisOptions)
         {
