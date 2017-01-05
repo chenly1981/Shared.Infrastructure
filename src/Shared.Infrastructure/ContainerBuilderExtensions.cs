@@ -1,9 +1,13 @@
 ﻿using Autofac;
+using Microsoft.Extensions.Options;
 using Shared.Infrastructure.Redis;
 using Shared.Infrastructure.UnitOfWork;
 
 namespace Shared.Infrastructure
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ContainerBuilderExtensions
     {
         /// <summary>
@@ -12,9 +16,10 @@ namespace Shared.Infrastructure
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static ContainerBuilder AddRedis(this ContainerBuilder builder)
+        public static ContainerBuilder AddRedis(this ContainerBuilder builder, RedisOptions redisOptions)
         {
-            builder.RegisterType<RedisProvider>().As<IRedisProvider>().SingleInstance();
+            RedisProvider redisProvider = new RedisProvider(redisOptions);
+            builder.RegisterInstance(redisProvider).As<IRedisProvider>().SingleInstance();
 
             return builder;
         }

@@ -48,17 +48,15 @@ namespace Shared.Infrastructure.Test
         {
             IServiceProvider serviceProvider = InitDependencyInjection(services =>
             {
-                services.AddOptions();
 
-                services.Configure<RedisOptions>(opt =>
-                {
-                    opt.EndPoints = new string[] { "localhost:6379" };
-                });
             }, containerBuilder =>
             {
-                containerBuilder.AddRedis();
+                containerBuilder.AddRedis(new RedisOptions
+                {
+                    EndPoints = new string[] { "localhost:6379" }
+                });
             });
-            
+
             IRedisProvider redisProvider = serviceProvider.GetService<IRedisProvider>();
             IDatabase redis = redisProvider.GetDatabase();
 
@@ -73,16 +71,14 @@ namespace Shared.Infrastructure.Test
         {
             IServiceProvider serviceProvider = InitDependencyInjection(services =>
             {
-                services.AddOptions();
 
-                services.Configure<RedisOptions>(opt =>
-                {
-                    opt.EndPoints = new string[] { "localhost:6379" };
-                    opt.Db = 1;
-                });
             }, containerBulder =>
             {
-                containerBulder.AddRedis();
+                containerBulder.AddRedis(new RedisOptions
+                {
+                    EndPoints = new string[] { "localhost:6379" },
+                    Db = 1
+                });
             });
 
             IRedisProvider redisProvider = serviceProvider.GetService<IRedisProvider>();

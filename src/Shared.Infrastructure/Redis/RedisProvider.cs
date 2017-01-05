@@ -34,15 +34,15 @@ namespace Shared.Infrastructure.Redis
             }
         }
 
-        private IOptions<RedisOptions> OptionsAccessor { get; set; }
+        private RedisOptions RedisOptions { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="optionsAccessor"></param>
-        public RedisProvider(IOptions<RedisOptions> optionsAccessor)
+        /// <param name="redisOptions"></param>
+        public RedisProvider(RedisOptions redisOptions)
         {
-            OptionsAccessor = optionsAccessor;
+            RedisOptions = redisOptions;
         }
 
         /// <summary>
@@ -85,10 +85,10 @@ namespace Shared.Infrastructure.Redis
         {
             var configuration = new ConfigurationOptions
             {
-                Password = OptionsAccessor.Value.Password,
-                DefaultDatabase = OptionsAccessor.Value.Db
+                Password = RedisOptions.Password,
+                DefaultDatabase = RedisOptions.Db
             };
-            foreach (string endPoint in OptionsAccessor.Value.EndPoints)
+            foreach (string endPoint in RedisOptions.EndPoints)
             {
                 configuration.EndPoints.Add(EndPointCollection.TryParse(endPoint));
             }
@@ -102,7 +102,7 @@ namespace Shared.Infrastructure.Redis
         /// <returns></returns>
         public RedisOptions GetOptions()
         {
-            return OptionsAccessor.Value;
+            return RedisOptions;
         }
     }
 }
