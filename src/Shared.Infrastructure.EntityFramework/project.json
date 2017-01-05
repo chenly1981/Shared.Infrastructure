@@ -20,6 +20,8 @@
       "Shared.Infrastructure.EntityFramework"
     ]
   },
+  "authors": [ "scheshan" ],
+  "projectUrl": "https://github.com/scheshan/Shared.Infrastructure",
   "buildOptions": {
     "xmlDoc": true
   }
