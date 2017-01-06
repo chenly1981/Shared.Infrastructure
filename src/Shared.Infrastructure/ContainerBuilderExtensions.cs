@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Shared.Infrastructure.Redis;
 using Shared.Infrastructure.UnitOfWork;
+using System;
 
 namespace Shared.Infrastructure
 {
@@ -28,11 +29,16 @@ namespace Shared.Infrastructure
         /// Register UnitOfWork provider
         /// </summary>
         /// <param name="builder"></param>
+        /// <param name="configAction"></param>
         /// <returns></returns>
-        public static ContainerBuilder AddUnitOfWork(this ContainerBuilder builder)
+        public static ContainerBuilder AddUnitOfWork(this ContainerBuilder builder, Action<IUnitOfWorkProvider> configAction = null)
         {
             builder.RegisterType<UnitOfWorkProvider>()
                 .As<IUnitOfWorkProvider>()
+                .OnActivating(e => 
+                {
+                    configAction?.Invoke(e.Instance);
+                })    
                 .SingleInstance();
 
             return builder;

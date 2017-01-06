@@ -9,17 +9,15 @@ using System.Threading.Tasks;
 
 namespace Shared.Infrastructure.UnitOfWork.Cassandra
 {
-    public class CassandraUnitOfWorkCreator : IUnitOfWorkCreator
+    public class CassandraUnitOfWorkCreator : UnitOfWorkCreator<CassandraUnitOfWork>
     {
         private CassandraOptions CassandraOptions { get; set; }
 
         private ICluster CassandraCluster { get; set; }
 
-        private IComponentContext ComponentContext { get; set; }
-
-        public CassandraUnitOfWorkCreator(CassandraOptions cassandraOptions, IComponentContext componentContext)
+        public CassandraUnitOfWorkCreator(ILifetimeScope lifetimeScope, CassandraOptions cassandraOptions)
+            : base(lifetimeScope)
         {
-            this.ComponentContext = componentContext;
             this.CassandraOptions = cassandraOptions;
 
             var queryOptions = new QueryOptions();
@@ -32,13 +30,13 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
                 .Build();
         }
 
-        public IUnitOfWork CreateUnitOfWork()
+        public override IUnitOfWork CreateUnitOfWork()
         {
             var session = this.CassandraCluster.Connect(this.CassandraOptions.KeySpace);
 
             Parameter parameter = TypedParameter.From(session);
 
-            return this.ComponentContext.Resolve<CassandraUnitOfWork>(parameter);
+            return this.LifetimeScope.Resolve<CassandraUnitOfWork>(parameter);
         }
 
         public void Dispose()

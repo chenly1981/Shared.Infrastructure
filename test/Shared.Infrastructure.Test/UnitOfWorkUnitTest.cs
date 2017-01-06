@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Autofac;
 
 namespace Shared.Infrastructure.Test
 {
@@ -36,8 +37,10 @@ namespace Shared.Infrastructure.Test
                 }, ServiceLifetime.Transient);
             }, containerBuilder =>
             {
-                containerBuilder.AddUnitOfWork()
-                    .AddEntityFramework<Context.TestContext>("ef");
+                containerBuilder.AddUnitOfWork(provider =>
+                {
+                    provider.AddEntityFramework<Context.TestContext>("ef");
+                });
             });
 
             IUnitOfWorkProvider unitOfWirkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
@@ -68,14 +71,19 @@ namespace Shared.Infrastructure.Test
 
             }, containerBuilder =>
             {
-                containerBuilder.AddUnitOfWork()
-                    .AddCassandra("cassandra", new UnitOfWork.Cassandra.CassandraOptions
+                containerBuilder.AddUnitOfWork(provider =>
+                {
+                    provider.AddCassandra("cassandra", new UnitOfWork.Cassandra.CassandraOptions
                     {
                         Nodes = new string[] { "192.168.40.229" },
                         User = "cassandra",
                         Password = "cassandra",
                         KeySpace = "ias_dev"
+                    }, builder =>
+                    {
+
                     });
+                });
             });
 
             IUnitOfWorkProvider unitOfWirkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
@@ -86,6 +94,51 @@ namespace Shared.Infrastructure.Test
                 var entityList = uw.Query<Entity.RTLSAreaDataDay>(t => t.Day == 20161129);
 
                 Assert.IsTrue(entityList.Count > 0);
+            }
+        }
+
+        [TestMethod]
+        public void CannotRetriveRepositoryAcrossUnitOfWork()
+        {
+            IServiceProvider serviceProvider = InitDependencyInjection(services =>
+            {
+                services.AddDbContext<Context.TestContext>(builder =>
+                {
+                    builder.UseInMemoryDatabase();
+                }, ServiceLifetime.Transient);
+            }, containerBuilder =>
+            {
+                containerBuilder.AddUnitOfWork(provider =>
+                {
+                    provider.AddEntityFramework<Context.TestContext>("ef1", builder =>
+                    {
+                        builder.RegisterType<Repository.EntityFramework.TestEntityRepository>().As<Repository.Interface.ITestEntityRepository>();
+                    });
+
+                    provider.AddEntityFramework<Context.TestContext>("ef2");
+                });
+            });
+
+            IUnitOfWorkProvider unitOfWirkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
+            using (IUnitOfWork uw = unitOfWirkProvider.CreateUnitOfWork("ef1"))
+            {
+                Repository.Interface.ITestEntityRepository repository = uw.CreateRepository<Repository.Interface.ITestEntityRepository>();
+                Assert.IsNotNull(repository);
+
+                var entityList = repository.All();
+            }
+
+            using (IUnitOfWork uw = unitOfWirkProvider.CreateUnitOfWork("ef2"))
+            {
+                try
+                {
+                    Repository.Interface.ITestEntityRepository repository = uw.CreateRepository<Repository.Interface.ITestEntityRepository>();
+                    Assert.IsNull(repository);
+                }
+                catch
+                {
+
+                }
             }
         }
     }

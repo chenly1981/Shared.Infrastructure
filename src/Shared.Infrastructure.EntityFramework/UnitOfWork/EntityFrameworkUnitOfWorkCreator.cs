@@ -6,24 +6,18 @@ using System;
 
 namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 {
-    internal class EntityFrameworkUnitOfWorkCreator<TContext> : IUnitOfWorkCreator
+    internal class EntityFrameworkUnitOfWorkCreator<TContext> : UnitOfWorkCreator<EntityFrameworkUnitOfWork<TContext>>
         where TContext : DbContext
     {
-        private IComponentContext ComponentContext { get; set; }
-
-        public EntityFrameworkUnitOfWorkCreator(IComponentContext componentContext)
+        public EntityFrameworkUnitOfWorkCreator(ILifetimeScope lifetimeScope)
+            : base(lifetimeScope)
         {
-            if (componentContext == null)
-            {
-                throw new ArgumentNullException(nameof(componentContext));
-            }
-            
-            this.ComponentContext = componentContext;
+
         }
 
         public IUnitOfWork CreateUnitOfWork()
         {
-            var uw = this.ComponentContext.Resolve<EntityFrameworkUnitOfWork<TContext>>();
+            var uw = this.LifetimeScope.Resolve<EntityFrameworkUnitOfWork<TContext>>();
             return uw;
         }
 
