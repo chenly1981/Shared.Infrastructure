@@ -23,6 +23,7 @@
   "authors": [ "scheshan" ],
   "projectUrl": "https://github.com/scheshan/Shared.Infrastructure",
   "buildOptions": {
-    "xmlDoc": true
+    "xmlDoc": true,
+    "nowarn": [ "1591" ]
   }
 }
