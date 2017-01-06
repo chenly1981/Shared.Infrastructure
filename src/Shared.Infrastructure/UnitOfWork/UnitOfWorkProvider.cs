@@ -10,6 +10,8 @@ namespace Shared.Infrastructure.UnitOfWork
 
         public ILifetimeScope LifetimeScope { get; private set; }
 
+        private bool IsDisposed { get; set; }
+
         public UnitOfWorkProvider(ILifetimeScope lifetimeScope)
         {
             LifetimeScope = lifetimeScope;
@@ -18,6 +20,11 @@ namespace Shared.Infrastructure.UnitOfWork
 
         public IUnitOfWork CreateUnitOfWork(string alias)
         {
+            if (IsDisposed)
+            {
+                throw new InvalidOperationException("UnitOfWork provider has been already disposed");
+            }
+
             if (UnitOfWorkCreators.ContainsKey(alias))
             {
                 return UnitOfWorkCreators[alias].CreateUnitOfWork();
@@ -30,6 +37,11 @@ namespace Shared.Infrastructure.UnitOfWork
 
         public void AddUnitOfWorkCreator<TUnitOfWorkCreator>(string alias, Action<ContainerBuilder> repositoryRegisteration) where TUnitOfWorkCreator : IUnitOfWorkCreator
         {
+            if (IsDisposed)
+            {
+                throw new InvalidOperationException("UnitOfWork provider has been already disposed");
+            }
+
             if (string.IsNullOrWhiteSpace(alias))
             {
                 throw new ArgumentNullException(nameof(alias));
@@ -54,6 +66,25 @@ namespace Shared.Infrastructure.UnitOfWork
                 IUnitOfWorkCreator unitOfWorkCreator = childScope.Resolve<IUnitOfWorkCreator>(TypedParameter.From(childScope));
 
                 UnitOfWorkCreators.Add(alias, unitOfWorkCreator);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (IsDisposed)
+            {
+                return;
+            }
+
+            IsDisposed = true;
+            lock (UnitOfWorkCreators)
+            {
+                foreach (KeyValuePair<string, IUnitOfWorkCreator> pair in UnitOfWorkCreators)
+                {
+                    pair.Value?.Dispose();
+                }
+
+                UnitOfWorkCreators.Clear();
             }
         }
     }

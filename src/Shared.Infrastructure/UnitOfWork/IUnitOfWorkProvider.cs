@@ -3,7 +3,7 @@ using System;
 
 namespace Shared.Infrastructure.UnitOfWork
 {
-    public interface IUnitOfWorkProvider
+    public interface IUnitOfWorkProvider : IDisposable
     {
         IUnitOfWork CreateUnitOfWork(string name);
 
