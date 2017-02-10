@@ -1,11 +1,6 @@
 ﻿using Autofac;
-using Autofac.Core;
 using Cassandra;
-using Shared.Infrastructure.UnitOfWork;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Shared.Infrastructure.UnitOfWork.Cassandra
 {
@@ -13,12 +8,17 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
     {
         private ISession Session { get; set; }
 
-        private IComponentContext ComponentContext { get; set; }
+        private ILifetimeScope LifetimeScope { get; set; }
 
-        public CassandraUnitOfWork(ISession session, IComponentContext componentContext)
+        internal CassandraUnitOfWork(ILifetimeScope lifetimeScope)
         {
-            this.Session = session;
-            this.ComponentContext = componentContext;
+            if (lifetimeScope == null)
+            {
+                throw new ArgumentNullException(nameof(lifetimeScope));
+            }
+
+            LifetimeScope = lifetimeScope;
+            this.Session = this.LifetimeScope.Resolve<ISession>();
         }
 
         public override ITransaction BeginTransaction()
@@ -28,16 +28,12 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
 
         protected override IRepository<T> ResolveDefaultRepository<T>()
         {
-            Parameter parameter = TypedParameter.From(this.Session);
-
-            return this.ComponentContext.Resolve<RepositoryBase<T>>(parameter);
+            return this.LifetimeScope.Resolve<RepositoryBase<T>>();
         }
 
         protected override T ResolveRepository<T>()
         {
-            Parameter parameter = TypedParameter.From(this.Session);
-
-            return this.ComponentContext.Resolve<T>(parameter);
+            return this.LifetimeScope.Resolve<T>();
         }
 
         public override void Dispose()

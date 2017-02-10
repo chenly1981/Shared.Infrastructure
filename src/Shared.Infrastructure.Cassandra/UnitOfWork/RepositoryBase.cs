@@ -6,21 +6,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Shared.Infrastructure.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Shared.Infrastructure.UnitOfWork.Cassandra
 {
     public class RepositoryBase<T> : IRepository<T> where T : class, IEntity
     {
-        protected ISession Connection { get; private set; }
-
-        public RepositoryBase(ISession connection)
+        protected ISession Connection
         {
-            if (connection == null)
+            get
             {
-                throw new ArgumentNullException("connection");
+                return ServiceProvider.GetService<ISession>();
+            }
+        }
+
+        private ILoggerFactory LoggerFactory { get; set; }
+
+        protected IServiceProvider ServiceProvider { get; private set; }
+
+        protected ILogger Logger { get; set; }
+
+        public RepositoryBase(IServiceProvider serviceProvider)
+        {
+            if (serviceProvider == null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            this.Connection = connection;
+            ServiceProvider = serviceProvider;
+            LoggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            Logger = LoggerFactory.CreateLogger(this.GetType());
         }
 
         #region sync methods
@@ -56,21 +72,38 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
         public List<T> All()
         {
             var table = this.GetTable();
-            return table.Execute().ToList();
+            List<T> result = null;
+
+            Invoke(() =>
+            {
+                result = table.Execute().ToList();
+            });
+
+            return result;
         }
 
         public List<T> Query(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
         {
             var table = this.GetTable();
 
-            return table.Where(predicate).Execute().ToList();
+            List<T> result = null;
+
+            Invoke(() =>
+            {
+                result = table.Where(predicate).Execute().ToList();
+            });
+
+            return result;
         }
 
         public int Delete(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
         {
             var table = this.GetTable();
 
-            table.DeleteIf(predicate).Execute();
+            Invoke(() =>
+            {
+                table.DeleteIf(predicate).Execute();
+            });
 
             return 0;
         }
@@ -84,7 +117,14 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
         {
             var table = this.GetTable();
 
-            return table.FirstOrDefault(predicate).Execute();
+            T result = null;
+
+            Invoke(() =>
+            {
+                result = table.FirstOrDefault(predicate).Execute();
+            });
+
+            return result;
         }
 
         public int Update(object updateOnly, System.Linq.Expressions.Expression<Func<T, bool>> predicate)
@@ -128,7 +168,11 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
                 {
                     batch.Add(table.Insert(item));
                 }
-                this.Connection.Execute(batch);
+
+                Invoke(() =>
+                {
+                    this.Connection.Execute(batch);
+                });                
             }, 1000);
         }
 
@@ -271,13 +315,50 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
                     query.SetPagingState(pagingState);
                 }
 
-                pagedResult = query.ExecutePaged();
+                Invoke(() =>
+                {
+                    pagedResult = query.ExecutePaged();
+                });
                 pagingState = pagedResult.PagingState;
 
                 currentPageIndex++;
             }
 
             return pagedResult.ToList();
+        }
+
+        protected void Invoke(Action action)
+        {
+            bool isSuccess = false;
+            int tryCount = 0;
+            do
+            {
+                try
+                {
+                    tryCount++;
+                    action();
+                    isSuccess = true;
+                }
+                catch (Exception ex)
+                {
+                    if (tryCount < 5)
+                    {
+                        Logger.LogError(0, ex, "Cassandra Operation Error, try count:" + tryCount + ", will retry. Error Message: " + ex.Message);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            } while (!isSuccess);
+        }
+
+        protected void ExecuteCql(string cql)
+        {
+            Invoke(() =>
+            {
+                this.Connection.Execute(cql);
+            });
         }
 
         #endregion

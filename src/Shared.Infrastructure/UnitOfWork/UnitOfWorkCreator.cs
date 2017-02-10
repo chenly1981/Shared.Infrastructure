@@ -26,7 +26,7 @@ namespace Shared.Infrastructure.UnitOfWork
             return this.LifetimeScope.Resolve<TUnitOfWork>();
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (LifetimeScope != null)
             {

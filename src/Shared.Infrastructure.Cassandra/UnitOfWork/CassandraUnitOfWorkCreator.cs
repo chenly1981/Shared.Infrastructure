@@ -34,12 +34,15 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
         {
             var session = this.CassandraCluster.Connect(this.CassandraOptions.KeySpace);
 
-            Parameter parameter = TypedParameter.From(session);
-
-            return this.LifetimeScope.Resolve<CassandraUnitOfWork>(parameter);
+            var childScope = this.LifetimeScope.BeginLifetimeScope(builder =>
+            {
+                builder.RegisterInstance(session).As<ISession>().SingleInstance();
+            });
+                        
+            return new CassandraUnitOfWork(childScope);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             if (this.CassandraCluster != null)
             {
