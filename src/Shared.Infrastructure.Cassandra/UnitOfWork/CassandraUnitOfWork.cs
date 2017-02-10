@@ -44,6 +44,10 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
             {
                 this.Session.Dispose();
             }
+            if (this.LifetimeScope != null)
+            {
+                this.LifetimeScope.Dispose();
+            }
         }
     }
 }
