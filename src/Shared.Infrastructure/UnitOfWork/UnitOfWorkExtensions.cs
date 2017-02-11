@@ -93,6 +93,12 @@ namespace Shared.Infrastructure.UnitOfWork
             return uw.CreateDefaultRepository<T>().Count(predicate);
         }
 
+        public static void BatchInsert<T>(this IUnitOfWork uw, IEnumerable<T> entityList)
+            where T : class, IEntity
+        {
+            uw.CreateDefaultRepository<T>().BatchInsert(entityList);
+        }
+
         #endregion
 
         #region async methods
@@ -179,6 +185,12 @@ namespace Shared.Infrastructure.UnitOfWork
             where T : class, IEntity
         {
             return await uw.CreateDefaultRepository<T>().CountAsync(predicate);
+        }
+
+        public static async Task BatchInsertAsync<T>(this IUnitOfWork uw, IEnumerable<T> entityList)
+            where T : class, IEntity
+        {
+            await uw.CreateDefaultRepository<T>().BatchInsertAsync(entityList);
         }
 
         #endregion
