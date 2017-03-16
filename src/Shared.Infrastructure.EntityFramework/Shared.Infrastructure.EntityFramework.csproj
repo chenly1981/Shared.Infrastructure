@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>0.1.6</VersionPrefix>
+    <Authors>scheshan</Authors>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Shared.Infrastructure.EntityFramework</AssemblyName>
+    <PackageId>Shared.Infrastructure.EntityFramework</PackageId>
+    <PackageTags>Shared.Infrastructure;Shared.Infrastructure.EntityFramework</PackageTags>
+    <PackageProjectUrl>https://github.com/scheshan/Shared.Infrastructure</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/scheshan/Shared.Infrastructure</RepositoryUrl>
+    <NetStandardImplicitPackageVersion>1.6.1-*</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.1.0-*" />
+  </ItemGroup>
+
+</Project>

@@ -1,26 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B21E926F-EDEC-44F4-A1EF-858367B11688}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E0923D5A-8CD3-415A-9DC7-681A9326C84F}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Shared.Infrastructure", "src\Shared.Infrastructure\Shared.Infrastructure.xproj", "{1B0C3AE6-00AD-4E73-BDBD-EF681781F4AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{18A507B3-A1B1-49DC-A0CD-632A5D2FDA01}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Shared.Infrastructure.EntityFramework", "src\Shared.Infrastructure.EntityFramework\Shared.Infrastructure.EntityFramework.xproj", "{A7547D48-2881-4BFD-A603-4B7B5405B2D3}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Shared.Infrastructure.Test", "test\Shared.Infrastructure.Test\Shared.Infrastructure.Test.xproj", "{CD5EA791-F02D-4807-80E8-693E82380927}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Shared.Infrastructure.Cassandra", "src\Shared.Infrastructure.Cassandra\Shared.Infrastructure.Cassandra.xproj", "{270463EF-663C-40CC-A023-D2F11A745787}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{86202195-CCC3-44FF-9F46-6E06ECAEB051}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Infrastructure", "src\Shared.Infrastructure\Shared.Infrastructure.csproj", "{1B0C3AE6-00AD-4E73-BDBD-EF681781F4AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Infrastructure.EntityFramework", "src\Shared.Infrastructure.EntityFramework\Shared.Infrastructure.EntityFramework.csproj", "{A7547D48-2881-4BFD-A603-4B7B5405B2D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Infrastructure.Test", "test\Shared.Infrastructure.Test\Shared.Infrastructure.Test.csproj", "{CD5EA791-F02D-4807-80E8-693E82380927}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Infrastructure.Cassandra", "src\Shared.Infrastructure.Cassandra\Shared.Infrastructure.Cassandra.csproj", "{270463EF-663C-40CC-A023-D2F11A745787}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
