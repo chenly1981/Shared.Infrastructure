@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Autofac;
 using System.Reflection;
-using Shared.Infrastructure.UnitOfWork.Cassandra;
 
 namespace Shared.Infrastructure.Test
 {
@@ -41,7 +40,7 @@ namespace Shared.Infrastructure.Test
             {
                 containerBuilder.AddUnitOfWork(provider =>
                 {
-                    provider.Register(new EntityFrameworkUnitOfWorkRegisteration("ef"));
+                    provider.AddEntityFramework<Context.TestContext>("ef");
                 });
             });
 
@@ -70,18 +69,21 @@ namespace Shared.Infrastructure.Test
         {
             IServiceProvider serviceProvider = InitDependencyInjection(services =>
             {
-                services.AddLogging();
+
             }, containerBuilder =>
             {
                 containerBuilder.AddUnitOfWork(provider =>
                 {
-                    provider.Register(new CassandraUnitOfWorkRegisteration(new CassandraOptions
+                    provider.AddCassandra("cassandra", new UnitOfWork.Cassandra.CassandraOptions
                     {
                         Nodes = new string[] { "192.168.40.229" },
                         User = "cassandra",
                         Password = "cassandra",
                         KeySpace = "ias_dev"
-                    }));                    
+                    }, builder =>
+                    {
+
+                    });
                 });
             });
 
@@ -101,7 +103,6 @@ namespace Shared.Infrastructure.Test
         {
             IServiceProvider serviceProvider = InitDependencyInjection(services =>
             {
-                services.AddLogging();
                 services.AddDbContext<Context.TestContext>(builder =>
                 {
                     builder.UseInMemoryDatabase();
@@ -110,11 +111,12 @@ namespace Shared.Infrastructure.Test
             {
                 containerBuilder.AddUnitOfWork(provider =>
                 {
-                    provider.Register(new EntityFrameworkUnitOfWorkRegisteration("ef1", builder=> 
+                    provider.AddEntityFramework<Context.TestContext>("ef1", builder =>
                     {
                         builder.RegisterType<Repository.EntityFramework.TestEntityRepository>().As<Repository.Interface.ITestEntityRepository>();
-                    }));
-                    provider.Register(new EntityFrameworkUnitOfWorkRegisteration("ef2"));
+                    });
+
+                    provider.AddEntityFramework<Context.TestContext>("ef2");
                 });
             });
 
@@ -140,45 +142,6 @@ namespace Shared.Infrastructure.Test
                 }
             }
         }
-    }
-
-    public class EntityFrameworkUnitOfWorkRegisteration : Shared.Infrastructure.EntityFramework.UnitOfWorkRegisteration<Context.TestContext>
-    {
-        private string _name;
-
-        private Action<ContainerBuilder> _repositoryRegisteration;
-
-        public override string Name => _name;
-
-        public override Assembly EntityAssembly => Assembly.Load(new AssemblyName("Shared.Infrastructure.Test"));
-
-        public override Assembly RepositoryAssembly => Assembly.Load(new AssemblyName("Shared.Infrastructure.Test"));
-
-        public EntityFrameworkUnitOfWorkRegisteration(string name, Action<ContainerBuilder> repositoryRegisteration = null)
-        {
-            _name = name ?? throw new ArgumentNullException(nameof(name));
-            _repositoryRegisteration = repositoryRegisteration;
-        }
-
-        protected override void ConfigureContainerBuilder(ContainerBuilder containerBuilder)
-        {
-            base.ConfigureContainerBuilder(containerBuilder);
-
-            _repositoryRegisteration?.Invoke(containerBuilder);
-        }
-    }
-
-    public class CassandraUnitOfWorkRegisteration : Shared.Infrastructure.Cassandra.UnitOfWorkRegisteration
-    {
-        public CassandraUnitOfWorkRegisteration(CassandraOptions cassandraOptions) : base(cassandraOptions)
-        {
-        }
-
-        public override string Name => "cassandra";
-
-        public override Assembly EntityAssembly => Assembly.Load(new AssemblyName("Shared.Infrastructure.Test"));
-
-        public override Assembly RepositoryAssembly => null;
     }
 }
 

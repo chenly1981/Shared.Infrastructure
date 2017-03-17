@@ -7,6 +7,6 @@ namespace Shared.Infrastructure.UnitOfWork
     {
         IUnitOfWork CreateUnitOfWork(string name);
 
-        void AddUnitOfWorkCreator<TUnitOfWorkCreator>(string alias, Action<ContainerBuilder> repositoryRegisteration = null) where TUnitOfWorkCreator : IUnitOfWorkCreator;
+        void Register(IUnitOfWorkRegisteration unitOfWorkRegisteration);
     }
 }

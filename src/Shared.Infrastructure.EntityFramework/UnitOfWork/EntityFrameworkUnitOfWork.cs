@@ -15,12 +15,7 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 
         public EntityFrameworkUnitOfWork(TContext context, IComponentContext componentContext)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            this.Context = context;
+            this.Context = context ?? throw new ArgumentNullException(nameof(context));
             this.ComponentContext = componentContext;
         }
 

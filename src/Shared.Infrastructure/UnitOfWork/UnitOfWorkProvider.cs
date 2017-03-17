@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Autofac;
 
 namespace Shared.Infrastructure.UnitOfWork
 {
@@ -35,37 +37,26 @@ namespace Shared.Infrastructure.UnitOfWork
             }
         }
 
-        public void AddUnitOfWorkCreator<TUnitOfWorkCreator>(string alias, Action<ContainerBuilder> repositoryRegisteration) where TUnitOfWorkCreator : IUnitOfWorkCreator
+        public void Register(IUnitOfWorkRegisteration unitOfWorkRegisteration)
         {
             if (IsDisposed)
             {
                 throw new InvalidOperationException("UnitOfWork provider has been already disposed");
             }
 
-            if (string.IsNullOrWhiteSpace(alias))
-            {
-                throw new ArgumentNullException(nameof(alias));
-            }
-
             lock (UnitOfWorkCreators)
             {
-                if (UnitOfWorkCreators.ContainsKey(alias))
-                {
-                    throw new InvalidOperationException($"You have already add a UnitOfWork creator with name '{alias}'");
-                }
-
                 ILifetimeScope childScope = LifetimeScope.BeginLifetimeScope(containerBuilder =>
                 {
-                    containerBuilder.RegisterType<TUnitOfWorkCreator>()
+                    containerBuilder.RegisterType(unitOfWorkRegisteration.UnitOfWorkCreatorType)
                         .As<IUnitOfWorkCreator>()
                         .SingleInstance();
-
-                    repositoryRegisteration?.Invoke(containerBuilder);
+                    unitOfWorkRegisteration.Initialize(containerBuilder);
                 });
 
                 IUnitOfWorkCreator unitOfWorkCreator = childScope.Resolve<IUnitOfWorkCreator>(TypedParameter.From(childScope));
 
-                UnitOfWorkCreators.Add(alias, unitOfWorkCreator);
+                UnitOfWorkCreators.Add(unitOfWorkRegisteration.Name, unitOfWorkCreator);
             }
         }
 

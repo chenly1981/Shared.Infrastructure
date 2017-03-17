@@ -28,7 +28,7 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
 
         protected override IRepository<T> ResolveDefaultRepository<T>()
         {
-            return this.LifetimeScope.Resolve<RepositoryBase<T>>();
+            return this.LifetimeScope.Resolve<IRepository<T>>();
         }
 
         protected override T ResolveRepository<T>()
