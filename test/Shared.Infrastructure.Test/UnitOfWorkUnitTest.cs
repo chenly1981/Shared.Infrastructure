@@ -61,7 +61,6 @@ namespace Shared.Infrastructure.Test
                 entity = uw.Get<Context.TestContext.TestEntity>(t => t.ID == 1);
 
                 Assert.IsNotNull(entity);
-                Assert.AreEqual(entity.Name, "name");
             }
         }
 
