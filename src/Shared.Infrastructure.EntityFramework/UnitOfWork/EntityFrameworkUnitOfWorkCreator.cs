@@ -15,13 +15,13 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 
         }
 
-        public IUnitOfWork CreateUnitOfWork()
+        public override IUnitOfWork CreateUnitOfWork()
         {
             var uw = this.LifetimeScope.Resolve<EntityFrameworkUnitOfWork<TContext>>();
             return uw;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             
         }

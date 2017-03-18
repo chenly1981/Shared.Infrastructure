@@ -45,8 +45,8 @@ namespace Shared.Infrastructure.Test
                 });
             });
 
-            IUnitOfWorkProvider unitOfWirkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
-            using (IUnitOfWork uw = unitOfWirkProvider.CreateUnitOfWork("ef"))
+            IUnitOfWorkProvider unitOfWorkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
+            using (IUnitOfWork uw = unitOfWorkProvider.CreateUnitOfWork("ef"))
             {
                 Assert.IsNotNull(uw);
 
@@ -85,8 +85,8 @@ namespace Shared.Infrastructure.Test
                 });
             });
 
-            IUnitOfWorkProvider unitOfWirkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
-            using (IUnitOfWork uw = unitOfWirkProvider.CreateUnitOfWork("cassandra"))
+            IUnitOfWorkProvider unitOfWorkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
+            using (IUnitOfWork uw = unitOfWorkProvider.CreateUnitOfWork("cassandra"))
             {
                 Assert.IsNotNull(uw);
 
@@ -118,8 +118,8 @@ namespace Shared.Infrastructure.Test
                 });
             });
 
-            IUnitOfWorkProvider unitOfWirkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
-            using (IUnitOfWork uw = unitOfWirkProvider.CreateUnitOfWork("ef1"))
+            IUnitOfWorkProvider unitOfWorkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
+            using (IUnitOfWork uw = unitOfWorkProvider.CreateUnitOfWork("ef1"))
             {
                 Repository.Interface.ITestEntityRepository repository = uw.CreateRepository<Repository.Interface.ITestEntityRepository>();
                 Assert.IsNotNull(repository);
@@ -127,7 +127,7 @@ namespace Shared.Infrastructure.Test
                 var entityList = repository.All();
             }
 
-            using (IUnitOfWork uw = unitOfWirkProvider.CreateUnitOfWork("ef2"))
+            using (IUnitOfWork uw = unitOfWorkProvider.CreateUnitOfWork("ef2"))
             {
                 try
                 {
@@ -138,6 +138,44 @@ namespace Shared.Infrastructure.Test
                 {
 
                 }
+            }
+        }
+
+        [TestMethod]
+        public void RepositoryMethodOverrideShouldWork()
+        {
+            IServiceProvider serviceProvider = InitDependencyInjection(services =>
+            {
+                services.AddLogging();
+                services.AddDbContext<Context.TestContext>(builder =>
+                {
+                    builder.UseInMemoryDatabase();
+                }, ServiceLifetime.Transient);
+            }, containerBuilder =>
+            {
+                containerBuilder.AddUnitOfWork(provider =>
+                {
+                    provider.Register(new EntityFrameworkUnitOfWorkRegisteration("ef", builder =>
+                    {
+                        //builder.RegisterType<Repository.EntityFramework.TestEntityRepository>().As<Repository.Interface.ITestEntityRepository>();
+                    }));
+                });
+            });
+
+            IUnitOfWorkProvider unitOfWorkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
+            using (var uw = unitOfWorkProvider.CreateUnitOfWork("ef"))
+            {
+                var entity = new Context.TestContext.TestEntity
+                {
+                    ID = 1,
+                    Name = "hello"
+                };
+
+                uw.Insert(entity);
+
+                entity = uw.Get<Context.TestContext.TestEntity>(t => t.ID == 1);
+                
+                Assert.AreEqual(entity.Name, "override");
             }
         }
     }
@@ -178,7 +216,7 @@ namespace Shared.Infrastructure.Test
 
         public override Assembly[] EntityAssemblies => new Assembly[] { Assembly.Load(new AssemblyName("Shared.Infrastructure.Test")) };
 
-        public override Assembly[] RepositoryAssemblies => null;
+        public override Assembly[] RepositoryAssemblies => new Assembly[] { };
     }
 }
 

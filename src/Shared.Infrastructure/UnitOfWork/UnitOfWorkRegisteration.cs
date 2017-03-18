@@ -48,18 +48,18 @@ namespace Shared.Infrastructure.UnitOfWork
 
             if (RepositoryAssemblies?.Length > 0)
             {
-                Type repositoryInterfaceType = typeof(IRepository<>);
+                Type repositoryInterfaceType = typeof(IRepository);
 
-                var repositoryTypeList = RepositoryAssemblies.SelectMany(assembly => 
-                    assembly.DefinedTypes.Where(t => 
-                        repositoryInterfaceType.IsAssignableFrom(t.AsType())
+                var repositoryTypeList = RepositoryAssemblies.SelectMany(assembly =>
+                    assembly.DefinedTypes.Where(t =>
+                        t.IsClass && repositoryInterfaceType.IsAssignableFrom(t.AsType())
                     )
                 );
                 foreach (var repositoryTypeInfo in repositoryTypeList)
                 {
                     Type repositoryType = repositoryTypeInfo.AsType();
 
-                    containerBuilder.RegisterType(repositoryType);
+                    containerBuilder.RegisterType(repositoryType).AsImplementedInterfaces();
                 }
             }
 

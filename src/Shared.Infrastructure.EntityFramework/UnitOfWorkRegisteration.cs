@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac;
 using Shared.Infrastructure.UnitOfWork.EntityFramework;
+using Shared.Infrastructure.UnitOfWork;
 
 namespace Shared.Infrastructure.EntityFramework
 {
-    public abstract class UnitOfWorkRegisteration<TContext> : UnitOfWork.UnitOfWorkRegisteration
+    public abstract class UnitOfWorkRegisteration<TContext> : UnitOfWorkRegisteration
         where TContext : DbContext
     {
         public override Type DefaultRepositoryType => typeof(RepositoryBase<>);
