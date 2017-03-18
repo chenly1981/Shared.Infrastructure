@@ -12,12 +12,7 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
 
         internal CassandraUnitOfWork(ILifetimeScope lifetimeScope)
         {
-            if (lifetimeScope == null)
-            {
-                throw new ArgumentNullException(nameof(lifetimeScope));
-            }
-
-            LifetimeScope = lifetimeScope;
+            LifetimeScope = lifetimeScope ?? throw new ArgumentNullException(nameof(lifetimeScope));
             this.Session = this.LifetimeScope.Resolve<ISession>();
         }
 

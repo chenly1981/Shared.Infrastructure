@@ -6,7 +6,7 @@ using System;
 
 namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 {
-    internal class EntityFrameworkUnitOfWorkCreator<TContext> : UnitOfWorkCreator<EntityFrameworkUnitOfWork<TContext>>
+    internal class EntityFrameworkUnitOfWorkCreator<TContext> : UnitOfWorkCreator<EntityFrameworkUnitOfWork>
         where TContext : DbContext
     {
         public EntityFrameworkUnitOfWorkCreator(ILifetimeScope lifetimeScope)
@@ -17,7 +17,14 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 
         public override IUnitOfWork CreateUnitOfWork()
         {
-            var uw = this.LifetimeScope.Resolve<EntityFrameworkUnitOfWork<TContext>>();
+            var context = this.LifetimeScope.Resolve<TContext>();
+
+            var childScope = this.LifetimeScope.BeginLifetimeScope(builder =>
+            {
+                builder.RegisterInstance(context).AsSelf().As<DbContext>().SingleInstance();
+            });
+
+            var uw = new EntityFrameworkUnitOfWork(childScope);
             return uw;
         }
 

@@ -6,17 +6,16 @@ using Shared.Infrastructure.UnitOfWork;
 
 namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 {
-    public class EntityFrameworkUnitOfWork<TContext> : UnitOfWorkBase
-        where TContext : DbContext
+    public class EntityFrameworkUnitOfWork : UnitOfWorkBase
     {
-        public TContext Context { get; private set; }
+        public DbContext Context { get; private set; }
 
-        private IComponentContext ComponentContext { get; set; }
+        private ILifetimeScope LifetimeScope { get; set; }
 
-        public EntityFrameworkUnitOfWork(TContext context, IComponentContext componentContext)
+        public EntityFrameworkUnitOfWork(ILifetimeScope lifetimeScope)
         {
-            this.Context = context ?? throw new ArgumentNullException(nameof(context));
-            this.ComponentContext = componentContext;
+            LifetimeScope = lifetimeScope ?? throw new ArgumentNullException(nameof(lifetimeScope));
+            this.Context = lifetimeScope.Resolve<DbContext>();
         }
 
         public override ITransaction BeginTransaction()
@@ -37,13 +36,7 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 
         protected override T ResolveRepository<T>()
         {
-            var ovList = new Parameter[]
-                {
-                    new TypedParameter(typeof(DbContext), this.Context)
-                };
-            var repository = this.ComponentContext.Resolve<T>(ovList);
-
-            return repository;
+            return this.LifetimeScope.Resolve<T>();
         }
     }
 }

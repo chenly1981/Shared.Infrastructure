@@ -14,8 +14,8 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
     public class RepositoryBase<T> : AbstractRepositoryBase<T>
         where T : class, IEntity
     {
-        public RepositoryBase(DbContext context)
-            : base(context)
+        public RepositoryBase(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
 
         }

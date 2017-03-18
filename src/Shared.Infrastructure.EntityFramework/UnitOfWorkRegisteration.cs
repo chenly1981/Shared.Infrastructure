@@ -19,7 +19,7 @@ namespace Shared.Infrastructure.EntityFramework
         {
             base.ConfigureContainerBuilder(containerBuilder);
             
-            containerBuilder.RegisterType<EntityFrameworkUnitOfWork<TContext>>();
+            containerBuilder.RegisterType<EntityFrameworkUnitOfWork>();
         }
     }
 }

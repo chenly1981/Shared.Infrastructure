@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.Infrastructure.Test.Repository.Interface;
 using Shared.Infrastructure.UnitOfWork.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -10,10 +9,10 @@ using Shared.Infrastructure.Test.Context;
 
 namespace Shared.Infrastructure.Test.Repository.EntityFramework
 {
-    public class TestEntityRepository : RepositoryBase<TestEntity>, ITestEntityRepository
+    public class TestEntityRepository : RepositoryBase<TestEntity>
     {
-        public TestEntityRepository(DbContext context)
-            : base(context)
+        public TestEntityRepository(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
 
         }

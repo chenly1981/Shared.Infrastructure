@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 {
@@ -12,6 +14,12 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
         where T : class, IEntity
     {
         protected DbContext Context { get; private set; }
+
+        protected IServiceProvider ServiceProvider { get; private set; }
+
+        protected ILoggerFactory LoggerFactory { get; private set; }
+
+        protected ILogger Logger { get; set; }
 
         protected DbSet<T> Set
         {
@@ -21,9 +29,13 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
             }
         }
 
-        public AbstractRepositoryBase(DbContext context)
+        public AbstractRepositoryBase(IServiceProvider serviceProvider)
         {
-            this.Context = context ?? throw new ArgumentNullException(nameof(context));
+            ServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            LoggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            Logger = LoggerFactory.CreateLogger(this.GetType());
+
+            this.Context = serviceProvider.GetService<DbContext>();
         }
 
         public virtual void Insert(T entity)

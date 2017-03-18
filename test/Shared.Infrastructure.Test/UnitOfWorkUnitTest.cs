@@ -111,7 +111,7 @@ namespace Shared.Infrastructure.Test
                 {
                     provider.Register(new EntityFrameworkUnitOfWorkRegisteration("ef1", builder=> 
                     {
-                        builder.RegisterType<Repository.EntityFramework.TestEntityRepository>().As<Repository.Interface.ITestEntityRepository>();
+
                     }));
                     provider.Register(new EntityFrameworkUnitOfWorkRegisteration("ef2"));
                 });
@@ -120,7 +120,7 @@ namespace Shared.Infrastructure.Test
             IUnitOfWorkProvider unitOfWorkProvider = serviceProvider.GetService<IUnitOfWorkProvider>();
             using (IUnitOfWork uw = unitOfWorkProvider.CreateUnitOfWork("ef1"))
             {
-                Repository.Interface.ITestEntityRepository repository = uw.CreateRepository<Repository.Interface.ITestEntityRepository>();
+                var repository = uw.CreateRepository<Repository.EntityFramework.TestEntityRepository>();
                 Assert.IsNotNull(repository);
 
                 var entityList = repository.All();
@@ -130,7 +130,7 @@ namespace Shared.Infrastructure.Test
             {
                 try
                 {
-                    Repository.Interface.ITestEntityRepository repository = uw.CreateRepository<Repository.Interface.ITestEntityRepository>();
+                    var repository = uw.CreateRepository<Repository.EntityFramework.TestEntityRepository>();
                     Assert.IsNull(repository);
                 }
                 catch

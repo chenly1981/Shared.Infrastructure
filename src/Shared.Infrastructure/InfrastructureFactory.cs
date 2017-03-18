@@ -11,16 +11,7 @@ namespace Shared.Infrastructure
     {
         public ContainerBuilder CreateBuilder(IServiceCollection services)
         {
-            services.AddSingleton(
-                HtmlEncoder.Create(
-                    allowedRanges: new[]
-                    {
-                        UnicodeRanges.BasicLatin,
-                        UnicodeRanges.CjkUnifiedIdeographs
-                    }
-                )
-            );
-            services.AddOptions();
+            services.AddLogging();
 
             var containerBuilder = new ContainerBuilder();
             containerBuilder.Populate(services);         
