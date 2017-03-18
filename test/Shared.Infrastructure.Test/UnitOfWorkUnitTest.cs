@@ -150,9 +150,9 @@ namespace Shared.Infrastructure.Test
 
         public override string Name => _name;
 
-        public override Assembly EntityAssembly => Assembly.Load(new AssemblyName("Shared.Infrastructure.Test"));
+        public override Assembly[] EntityAssemblies => new Assembly[] { Assembly.Load(new AssemblyName("Shared.Infrastructure.Test")) };
 
-        public override Assembly RepositoryAssembly => Assembly.Load(new AssemblyName("Shared.Infrastructure.Test"));
+        public override Assembly[] RepositoryAssemblies => new Assembly[] { Assembly.Load(new AssemblyName("Shared.Infrastructure.Test")) };
 
         public EntityFrameworkUnitOfWorkRegisteration(string name, Action<ContainerBuilder> repositoryRegisteration = null)
         {
@@ -176,9 +176,9 @@ namespace Shared.Infrastructure.Test
 
         public override string Name => "cassandra";
 
-        public override Assembly EntityAssembly => Assembly.Load(new AssemblyName("Shared.Infrastructure.Test"));
+        public override Assembly[] EntityAssemblies => new Assembly[] { Assembly.Load(new AssemblyName("Shared.Infrastructure.Test")) };
 
-        public override Assembly RepositoryAssembly => null;
+        public override Assembly[] RepositoryAssemblies => null;
     }
 }
 

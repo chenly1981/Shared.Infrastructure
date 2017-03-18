@@ -15,13 +15,13 @@ namespace Shared.Infrastructure.UnitOfWork
 
         public abstract Type DefaultRepositoryType { get; }
 
-        public abstract Assembly EntityAssembly { get; }
+        public abstract Assembly[] EntityAssemblies { get; }
 
-        public abstract Assembly RepositoryAssembly { get; }
+        public abstract Assembly[] RepositoryAssemblies { get; }
 
         public void Initialize(ContainerBuilder containerBuilder)
         {
-            if (EntityAssembly != null)
+            if (EntityAssemblies?.Length > 0)
             {
                 if (DefaultRepositoryType == null)
                 {
@@ -31,7 +31,11 @@ namespace Shared.Infrastructure.UnitOfWork
                 Type repositoryInterfaceType = typeof(IRepository<>);
                 Type entityBaseType = typeof(IEntity);
 
-                var entityTypeList = EntityAssembly.DefinedTypes.Where(t => entityBaseType.IsAssignableFrom(t.AsType()));
+                var entityTypeList = EntityAssemblies.SelectMany(assembly =>
+                    assembly.DefinedTypes.Where(t =>
+                        entityBaseType.IsAssignableFrom(t.AsType())
+                    )
+                );
                 foreach (var entityTypeInfo in entityTypeList)
                 {
                     Type entityType = entityTypeInfo.AsType();
@@ -42,11 +46,15 @@ namespace Shared.Infrastructure.UnitOfWork
                 }
             }
 
-            if (RepositoryAssembly != null)
+            if (RepositoryAssemblies?.Length > 0)
             {
                 Type repositoryInterfaceType = typeof(IRepository<>);
 
-                var repositoryTypeList = RepositoryAssembly.DefinedTypes.Where(t => repositoryInterfaceType.IsAssignableFrom(t.AsType()));
+                var repositoryTypeList = RepositoryAssemblies.SelectMany(assembly => 
+                    assembly.DefinedTypes.Where(t => 
+                        repositoryInterfaceType.IsAssignableFrom(t.AsType())
+                    )
+                );
                 foreach (var repositoryTypeInfo in repositoryTypeList)
                 {
                     Type repositoryType = repositoryTypeInfo.AsType();
