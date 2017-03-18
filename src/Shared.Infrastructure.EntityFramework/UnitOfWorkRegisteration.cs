@@ -12,7 +12,7 @@ namespace Shared.Infrastructure.EntityFramework
     {
         public override Type DefaultRepositoryType => typeof(RepositoryBase<>);
 
-        public override Type UnitOfWorkCreatorType => typeof(EntityFrameworkUnitOfWork<TContext>);
+        public override Type UnitOfWorkCreatorType => typeof(EntityFrameworkUnitOfWorkCreator<TContext>);
 
         protected override void ConfigureContainerBuilder(ContainerBuilder containerBuilder)
         {
