@@ -45,16 +45,5 @@ namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 
             return repository;
         }
-
-        protected override IRepository<T> ResolveDefaultRepository<T>()
-        {
-            var ovList = new Parameter[]
-                {
-                    new TypedParameter(typeof(DbContext), this.Context)
-                };
-            var repository = this.ComponentContext.Resolve<RepositoryBase<T>>(ovList);
-
-            return repository;
-        }
     }
 }

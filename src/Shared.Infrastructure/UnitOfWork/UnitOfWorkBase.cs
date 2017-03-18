@@ -39,27 +39,8 @@ namespace Shared.Infrastructure.UnitOfWork
             }
         }
 
-        public IRepository<T> CreateDefaultRepository<T>() where T : class, IEntity
-        {
-            Type repositoryType = typeof(IRepository<T>);
-
-            if (Repositories.ContainsKey(repositoryType))
-            {
-                return (IRepository<T>)Repositories[repositoryType];
-            }
-            else
-            {
-                IRepository<T> repository = ResolveDefaultRepository<T>();
-                Repositories.Add(repositoryType, repository);
-
-                return repository;
-            }
-        }
-
         public abstract ITransaction BeginTransaction();
 
         protected abstract T ResolveRepository<T>() where T : IRepository;
-
-        protected abstract IRepository<T> ResolveDefaultRepository<T>() where T : class, IEntity;
     }
 }

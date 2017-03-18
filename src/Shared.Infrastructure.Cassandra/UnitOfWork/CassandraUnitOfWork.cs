@@ -26,11 +26,6 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
             throw new NotImplementedException();
         }
 
-        protected override IRepository<T> ResolveDefaultRepository<T>()
-        {
-            return this.LifetimeScope.Resolve<IRepository<T>>();
-        }
-
         protected override T ResolveRepository<T>()
         {
             return this.LifetimeScope.Resolve<T>();

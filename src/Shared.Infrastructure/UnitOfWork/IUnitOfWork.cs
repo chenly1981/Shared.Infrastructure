@@ -15,13 +15,6 @@ namespace Shared.Infrastructure.UnitOfWork
         T CreateRepository<T>() where T : IRepository;
 
         /// <summary>
-        /// Create a default repository
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        IRepository<T> CreateDefaultRepository<T>() where T : class, IEntity;
-
-        /// <summary>
         /// Create a transaction
         /// </summary>
         /// <returns></returns>
