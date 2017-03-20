@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac;
 
-namespace Shared.Infrastructure.Cassandra
+namespace Shared.Infrastructure.UnitOfWork.Cassandra
 {
     public abstract class UnitOfWorkRegisteration : UnitOfWork.UnitOfWorkRegisteration
     {

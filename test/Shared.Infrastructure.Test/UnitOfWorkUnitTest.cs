@@ -179,7 +179,7 @@ namespace Shared.Infrastructure.Test
         }
     }
 
-    public class EntityFrameworkUnitOfWorkRegisteration : Shared.Infrastructure.EntityFramework.UnitOfWorkRegisteration<Context.TestContext>
+    public class EntityFrameworkUnitOfWorkRegisteration : Shared.Infrastructure.UnitOfWork.EntityFramework.UnitOfWorkRegisteration<Context.TestContext>
     {
         private string _name;
 
@@ -205,7 +205,7 @@ namespace Shared.Infrastructure.Test
         }
     }
 
-    public class CassandraUnitOfWorkRegisteration : Shared.Infrastructure.Cassandra.UnitOfWorkRegisteration
+    public class CassandraUnitOfWorkRegisteration : Shared.Infrastructure.UnitOfWork.Cassandra.UnitOfWorkRegisteration
     {
         public CassandraUnitOfWorkRegisteration(CassandraOptions cassandraOptions) : base(cassandraOptions)
         {

@@ -1,12 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Autofac;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Autofac;
-using Shared.Infrastructure.UnitOfWork.EntityFramework;
-using Shared.Infrastructure.UnitOfWork;
 
-namespace Shared.Infrastructure.EntityFramework
+namespace Shared.Infrastructure.UnitOfWork.EntityFramework
 {
     public abstract class UnitOfWorkRegisteration<TContext> : UnitOfWorkRegisteration
         where TContext : DbContext

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sample.Web
 {
-    public class SampleUnitOfWorkRegisteration : Shared.Infrastructure.EntityFramework.UnitOfWorkRegisteration<Context.SampleDbContext>
+    public class SampleUnitOfWorkRegisteration : Shared.Infrastructure.UnitOfWork.EntityFramework.UnitOfWorkRegisteration<Context.SampleDbContext>
     {
         public override string Name => Consts.UnitOfWorkNames.SAMPLE;
 

@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Shared.Infrastructure.EntityFramework\Shared.Infrastructure.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\src\Shared.Infrastructure.UnitOfWork.EntityFramework\Shared.Infrastructure.UnitOfWork.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\Shared.Infrastructure\Shared.Infrastructure.csproj" />
   </ItemGroup>
 

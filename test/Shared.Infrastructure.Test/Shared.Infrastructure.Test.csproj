@@ -13,9 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Shared.Infrastructure.UnitOfWork.Cassandra\Shared.Infrastructure.UnitOfWork.Cassandra.csproj" />
+    <ProjectReference Include="..\..\src\Shared.Infrastructure.UnitOfWork.EntityFramework\Shared.Infrastructure.UnitOfWork.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\Shared.Infrastructure\Shared.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\Shared.Infrastructure.EntityFramework\Shared.Infrastructure.EntityFramework.csproj" />
-    <ProjectReference Include="..\..\src\Shared.Infrastructure.Cassandra\Shared.Infrastructure.Cassandra.csproj" />
   </ItemGroup>
 
   <ItemGroup>
