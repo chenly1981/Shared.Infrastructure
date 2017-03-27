@@ -12,11 +12,11 @@ namespace Shared.Infrastructure.UnitOfWork.Cassandra
 
         public override Type UnitOfWorkCreatorType => typeof(CassandraUnitOfWorkCreator);
 
-        private CassandraOptions CassandraOptions { get; set; }
+        protected abstract CassandraOptions CassandraOptions { get; }
 
-        public UnitOfWorkRegisteration(CassandraOptions cassandraOptions)
+        public UnitOfWorkRegisteration()
         {
-            CassandraOptions = cassandraOptions ?? throw new ArgumentNullException(nameof(cassandraOptions));
+            
         }
 
         protected override void ConfigureContainerBuilder(ContainerBuilder containerBuilder)

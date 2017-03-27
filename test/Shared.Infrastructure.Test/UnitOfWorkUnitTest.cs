@@ -207,8 +207,13 @@ namespace Shared.Infrastructure.Test
 
     public class CassandraUnitOfWorkRegisteration : Shared.Infrastructure.UnitOfWork.Cassandra.UnitOfWorkRegisteration
     {
-        public CassandraUnitOfWorkRegisteration(CassandraOptions cassandraOptions) : base(cassandraOptions)
+        private CassandraOptions _cassandraOptions;
+
+        protected override CassandraOptions CassandraOptions => _cassandraOptions;
+
+        public CassandraUnitOfWorkRegisteration(CassandraOptions cassandraOptions)
         {
+            _cassandraOptions = cassandraOptions ?? throw new ArgumentNullException(nameof(cassandraOptions));
         }
 
         public override string Name => "cassandra";
