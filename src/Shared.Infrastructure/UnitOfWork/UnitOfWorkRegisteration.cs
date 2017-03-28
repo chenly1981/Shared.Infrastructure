@@ -59,7 +59,7 @@ namespace Shared.Infrastructure.UnitOfWork
                 {
                     Type repositoryType = repositoryTypeInfo.AsType();
 
-                    containerBuilder.RegisterType(repositoryType).AsImplementedInterfaces();
+                    containerBuilder.RegisterType(repositoryType).AsSelf().AsImplementedInterfaces();
                 }
             }
 

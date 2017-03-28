@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Autofac;
 using System.Reflection;
 using Shared.Infrastructure.UnitOfWork.Cassandra;
+using Shared.Infrastructure.Test.Repository.Cassandra;
 
 namespace Shared.Infrastructure.Test
 {
@@ -89,9 +90,8 @@ namespace Shared.Infrastructure.Test
             {
                 Assert.IsNotNull(uw);
 
-                var entityList = uw.Query<Entity.RTLSAreaDataDay>(t => t.Day == 20161129);
-
-                Assert.IsTrue(entityList.Count > 0);
+                var repository = uw.CreateRepository<RTLSAreaDataDayRepository>();
+                Assert.IsNotNull(repository);
             }
         }
 
