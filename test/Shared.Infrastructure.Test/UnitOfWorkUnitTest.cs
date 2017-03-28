@@ -79,7 +79,7 @@ namespace Shared.Infrastructure.Test
                         Nodes = new string[] { "192.168.40.229" },
                         User = "cassandra",
                         Password = "cassandra",
-                        KeySpace = "ias_dev"
+                        KeySpace = "ias"
                     }));                    
                 });
             });
@@ -220,7 +220,7 @@ namespace Shared.Infrastructure.Test
 
         public override Assembly[] EntityAssemblies => new Assembly[] { Assembly.Load(new AssemblyName("Shared.Infrastructure.Test")) };
 
-        public override Assembly[] RepositoryAssemblies => new Assembly[] { };
+        public override Assembly[] RepositoryAssemblies => new Assembly[] { Assembly.Load(new AssemblyName("Shared.Infrastructure.Test")) };
     }
 }
 

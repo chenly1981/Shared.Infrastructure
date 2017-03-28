@@ -33,7 +33,7 @@ namespace Shared.Infrastructure.UnitOfWork
 
                 var entityTypeList = EntityAssemblies.SelectMany(assembly =>
                     assembly.DefinedTypes.Where(t =>
-                        entityBaseType.IsAssignableFrom(t.AsType())
+                        t.IsClass && !t.IsAbstract && !t.IsGenericType && entityBaseType.IsAssignableFrom(t.AsType())
                     )
                 );
                 foreach (var entityTypeInfo in entityTypeList)
@@ -52,7 +52,7 @@ namespace Shared.Infrastructure.UnitOfWork
 
                 var repositoryTypeList = RepositoryAssemblies.SelectMany(assembly =>
                     assembly.DefinedTypes.Where(t =>
-                        t.IsClass && repositoryInterfaceType.IsAssignableFrom(t.AsType())
+                        t.IsClass && !t.IsAbstract && !t.IsGenericType && repositoryInterfaceType.IsAssignableFrom(t.AsType())
                     )
                 );
                 foreach (var repositoryTypeInfo in repositoryTypeList)
